@@ -1,3 +1,4 @@
+@import '@fontsource-variable/lora';
 /* ===== GLOBAL RESET ===== */
 *,
 *::before,
@@ -8,7 +9,7 @@
 }
 
 html { scroll-behavior: smooth; }
-body { font-family: system-ui, serif; }
+body { font-family: 'Lora Variable',Georgia, system-ui, serif; }
 section { scroll-margin-top: 70px; }
 
 /* ===== NAV ===== */
