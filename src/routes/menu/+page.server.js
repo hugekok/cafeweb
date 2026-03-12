@@ -9,11 +9,13 @@ export const actions = {
 
     try {
       const conn = locals.db;
-      conn.prepare(`
-        INSERT INTO carts (item_name, item_price, quantity)
-        VALUES (?, ?, 1)
-        ON DUPLICATE KEY UPDATE quantity = quantity + 1
-      `).run(item_name, item_price);
+      const existing = conn.prepare('SELECT quantity FROM carts WHERE item_name = ?').get(item_name);
+      
+      if (existing) {
+        conn.prepare('UPDATE carts SET quantity = quantity + 1 WHERE item_name = ?').run(item_name);
+      } else {
+        conn.prepare('INSERT INTO carts (item_name, item_price, quantity) VALUES (?, ?, 1)').run(item_name, item_price);
+      }
 
       return { message: `☕ ${item_name} added to cart!`, messageType: 'success' };
     } catch (e) {

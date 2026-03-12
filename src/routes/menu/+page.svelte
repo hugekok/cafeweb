@@ -72,8 +72,12 @@
     if (showPopup) setTimeout(() => { showPopup = false; }, 2000);
   });
 
-  $: filteredItems = (cat) =>
-    menuItems.filter(i => i.category === cat && (activeFilter === 'all' || activeFilter === cat));
+  $: filteredItems = (cat) => {
+    if (activeFilter === 'all') {
+      return menuItems.filter(i => i.category === cat);
+    }
+    return menuItems.filter(i => i.category === cat && i.category === activeFilter);
+  };
 
   $: sectionVisible = (cat) =>
     activeFilter === 'all' || activeFilter === cat;
@@ -125,13 +129,13 @@
   </div>
 </section>
 
-{#each sections as section}
+  {#each sections as section}
   {#if sectionVisible(section.id)}
-    <section class="menu-section" id={section.id} transition:fade={{ duration: 250 }}>
+    <section class="menu-section" id={section.id} transition:fade={{ duration: 300 }}>
       <h2>{section.label}</h2>
       <div class="items">
         {#each filteredItems(section.id) as item (item.name)}
-          <div class="item" in:fade={{ duration: 400 }}>
+          <div class="item" in:fly={{ y: 30, duration: 400 }}>
             {#if item.badge}
               <div class="item-badge">{item.badge}</div>
             {/if}
@@ -143,7 +147,8 @@
               method="POST" 
               action="/menu?/addToCart"
               use:enhance={() => {
-                return async ({ result }) => {
+                return async ({ result, update }) => {
+                  await update({ reset: false });
                   if (result.type === 'success') {
                     showToast(result.data.message, result.data.messageType);
                   }
