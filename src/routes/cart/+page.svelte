@@ -24,23 +24,10 @@
 
 <svelte:head>
   <title>Cart - Ayush Café</title>
-  <link rel="icon" type="image/png" href="/static/favicon.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </svelte:head>
-
-<nav>
-  <a href="/" class="logo"><h2>Ayush Café</h2></a>
-  <div>
-    <a href="/">Home</a>
-    <a href="/#about">About Us</a>
-    <a href="/menu">Menu</a>
-    <a href="/#contact">Contact</a>
-    <a href="/cart">CART</a>
-  </div>
-</nav>
 
 {#if showPopup}
   <div class="popup {messageType}" transition:fly={{ x: 100, duration: 400 }}>
@@ -132,31 +119,6 @@
     </div>
   {/if}
 </div>
-
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-brand">
-      <h3>Ayush Café ☕</h3>
-      <p>Fresh Coffee. Cozy Moments.</p>
-    </div>
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <a href="/">Home</a>
-      <a href="/menu">Menu</a>
-      <a href="/#about">About Us</a>
-      <a href="/#contact">Contact</a>
-    </div>
-    <div class="footer-social">
-      <h4>Follow Us</h4>
-      <div class="social-icons">
-        <a href="https://www.facebook.com/ayush.ghonday.gurung" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.instagram.com/ayush_on_lead/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@mrlemon4807" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">© 2026 Ayush Café. All Rights Reserved.</div>
-</footer>
 
 <style>
   .cart-hero {
