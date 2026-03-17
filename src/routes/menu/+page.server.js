@@ -1,20 +1,22 @@
 import { fail } from '@sveltejs/kit';
+import { db } from '$lib/server/db';
+import { carts } from '$lib/server/db/schema';
+import { eq } from 'drizzle-orm';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-  addToCart: async ({ request, locals }) => {
+  addToCart: async ({ request }) => {
     const data = await request.formData();
     const item_name  = String(data.get('item_name')).trim();
     const item_price = parseInt(data.get('item_price'), 10);
 
     try {
-      const conn = locals.db;
-      const existing = conn.prepare('SELECT quantity FROM carts WHERE item_name = ?').get(item_name);
+      const existing = await db.select().from(carts).where(eq(carts.item_name, item_name)).limit(1);
       
-      if (existing) {
-        conn.prepare('UPDATE carts SET quantity = quantity + 1 WHERE item_name = ?').run(item_name);
+      if (existing.length > 0) {
+        await db.update(carts).set({ quantity: existing[0].quantity + 1 }).where(eq(carts.item_name, item_name));
       } else {
-        conn.prepare('INSERT INTO carts (item_name, item_price, quantity) VALUES (?, ?, 1)').run(item_name, item_price);
+        await db.insert(carts).values({ item_name, item_price, quantity: 1 });
       }
 
       return { message: `☕ ${item_name} added to cart!`, messageType: 'success' };
