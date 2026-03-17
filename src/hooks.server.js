@@ -1,6 +1,4 @@
-import Database from 'better-sqlite3';
-
-const db = new Database('local.db');
+import { db } from '$lib/server/db';
 db.pragma('journal_mode = WAL');
 
 // Initialize tables
